@@ -47,11 +47,12 @@ hl_predictors <- hl_predictors %>% rename("hs" = "c.302..55..171..342..948..899.
 df_cor <- tibble(x = hl_predictors$hs,
                  y = hl_predictors$density) 
 
-cor.test(df_cor$x, df_cor$y, method = "pearson")
 cor.test(df_cor$x, df_cor$y, method = "spearman")
 
 
 library(mgcv)
+library(gratia)
+library(performance)
 
 
 fit <- gam(density ~ s(hs), method = "REML", 
@@ -60,7 +61,7 @@ fit <- gam(density ~ s(hs), method = "REML",
 
 performance::check_distribution(fit)
 
-gam.check(fit)
+gratia::appraise(fit)
 
 gratia::draw(fit)
 

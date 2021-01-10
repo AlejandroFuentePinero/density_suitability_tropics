@@ -66,7 +66,7 @@ myBiomodModelOut <- BIOMOD_Modeling(
   DataSplit=80,
   Prevalence=0.5,
   VarImport=5,
-  models.eval.meth = c('TSS','ROC'),
+  models.eval.meth = 'TSS',
   SaveObj = TRUE,
   rescal.all.models = TRUE,
   do.full.models = FALSE,
@@ -80,8 +80,6 @@ myBiomodModelEval <- as.data.frame(get_evaluations(myBiomodModelOut))
 dimnames(myBiomodModelEval)
 # let's print the TSS scores 
 myBiomodModelEval["TSS","Testing.data",,,]
-# let's print the ROC scores of all selected models
-myBiomodModelEval["ROC","Testing.data",,,]
 # print variable importances
 var.imp <- as.data.frame(get_variables_importance(myBiomodModelOut))
 
