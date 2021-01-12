@@ -96,30 +96,12 @@ em_pred_raster <- em_pred_raster$pred
 em_pred_raster[em_pred_raster<0] <- 0
 
 
-# filter density map based on expert opinion (using SDM from Williams et al., 2010 as mask layer)
-
-mask <- raster("MTHORN_realized.asc")
-extent(mask) <- extent(em_pred_raster)
-resample <- resample(mask, em_pred_raster)
-resample[resample == 0] <- NA
-
-pred_mask <- mask(em_pred_raster, resample)
-
-# crop further unsuitable habitat outside rainforest area
-
-rainforest <- rgdal::readOGR("rainforest_awt.shp")
-
-crs(rainforest) <- crs(pred_mask)
-
-predictors_masked <- mask(pred_mask, rainforest)
-
 
 # Model accuracy - relation between observed and predicted density --------
 
 
-
 #find relation between pop size and habitat suitability ///obsDEN ~ predDEN///
-rasValue2 <- raster::extract(predictors_masked, hl_abundance) 
+rasValue2 <- raster::extract(em_pred_raster, hl_abundance) 
 rasValue2 <- as.data.frame(rasValue2)
 
 MTHORN_abundance <- as.data.frame(hl_abundance)
@@ -129,8 +111,6 @@ density_cor <- cbind(MTHORN_abundance, rasValue2)
 density_cor <- density_cor[complete.cases(density_cor), ]
 
 cor.test(density_cor$density, density_cor$rasValue2, method = "spearman") # correlation
-
-summary(lm(density_cor$rasValue2 ~ density_cor$density)) # linear regression
 
 
 # Influence of species traits on the relationship -------------------------
