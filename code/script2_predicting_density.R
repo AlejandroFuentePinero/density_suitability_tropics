@@ -99,9 +99,18 @@ em_pred_raster[em_pred_raster<0] <- 0
 
 # Model accuracy - relation between observed and predicted density --------
 
+# crop further unsuitable habitat outside rainforest area
+
+rainforest <- rgdal::readOGR("rainforest_awt.shp")
+
+
+crs(rainforest) <- crs(em_pred_raster)
+
+predictors_masked <- mask(em_pred_raster, rainforest)
+
 
 #find relation between pop size and habitat suitability ///obsDEN ~ predDEN///
-rasValue2 <- raster::extract(em_pred_raster, hl_abundance) 
+rasValue2 <- raster::extract(predictors_masked, hl_abundance) 
 rasValue2 <- as.data.frame(rasValue2)
 
 MTHORN_abundance <- as.data.frame(hl_abundance)
