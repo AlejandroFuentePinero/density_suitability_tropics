@@ -27,7 +27,7 @@ results <- read.csv("results.csv")
    scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
    scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
    geom_density(aes(x = obsDen_HS_spearman), fill = "royalblue3", col = "black", alpha = 0.6)+
-   labs(x = expression(paste("Observed density ~ habitat suitability (",rho,")")), y = "")+
+   labs(x = expression(paste("abundance-suitability correlation (",rho,")")), y = "")+
    theme(panel.grid.major = element_blank(), 
          panel.grid.minor = element_blank(),
          panel.background = element_blank(), 
@@ -45,7 +45,7 @@ results <- read.csv("results.csv")
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
     geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill = "orange3", col = "black", alpha = 0.6)+
-    labs(x = expression(paste("Observed density ~ habitat suitability (R"^2,")")), y = "Density of values\n")+
+    labs(x = expression(paste("Prediction power")), y = "Density of values\n")+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
@@ -63,7 +63,7 @@ results <- read.csv("results.csv")
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
     geom_density(aes(x = predDen_obsDen_spearman), fill = "forestgreen", col = "black", alpha = 0.6)+
-    labs(x = expression(paste("Observed density ~ predicted density (",rho,")")), y = "")+
+    labs(x = expression(paste("Model accuracy (",rho,")")), y = "")+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
@@ -84,7 +84,7 @@ results <- read.csv("results.csv")
     geom_density(aes(x = obsDen_HS_spearman), fill = "royalblue3", col = "black", alpha = 0.6)+
     geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill =  "orange3", col = "black", alpha = 0.6)+
     geom_density(aes(x = predDen_obsDen_spearman), fill = "forestgreen", col = "black", alpha = 0.6)+
-    labs(x = expression(paste("Observed density ~ predicted density (",rho,")")), y = "")+
+    #labs(x = expression(paste("abundance-suitability relationship (",rho,")")), y = "")+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
@@ -106,10 +106,9 @@ fig1
 
 # figure 2 ----------------------------------------------------------------
 
-(fig2a <- results %>% ggplot(aes(pot_dispersal2, obsDen_HS_spearman, col = taxa))+
-    geom_point(size = 2)+
+(fig2a <- results %>% ggplot(aes(pot_dispersal2, obsDen_HS_spearman))+
+    geom_point(size = 2, aes(shape = taxa))+
     labs(x = "Potential dispersal index", y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
-    scale_color_viridis_d(label = c("Bird", "Frog", "Mammal", "Reptile"))+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
@@ -121,13 +120,12 @@ fig1
           legend.position = c(0.85,0.28),
           strip.background = element_blank(),
           strip.text.x = element_blank())+
-    geom_smooth(method = "lm", linetype = "dashed", colour = "black")
+    geom_smooth(method = "lm", colour = "black")
   
 ) 
 
-(fig2b <- results %>% ggplot(aes(log_mass, obsDen_HS_spearman, col = taxa))+
-    geom_point(size = 2)+
-    scale_color_viridis_d(label = c("Bird", "Frog", "Mammal", "Reptile"))+
+(fig2b <- results %>% ggplot(aes(log_mass, obsDen_HS_spearman))+
+    geom_point(size = 2, aes(shape = taxa))+
     labs(x = "log(mass) (g)", y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
@@ -140,13 +138,12 @@ fig1
           legend.position = "none",
           strip.background = element_blank(),
           strip.text.x = element_blank())+
-    geom_smooth(method = "lm", linetype = "dashed", colour = "black")
+    geom_smooth(method = "lm", colour = "black")
   
 )
 
-(fig2c <- results %>% ggplot(aes(log_presence, obsDen_HS_spearman, col = taxa))+
-    geom_point(size = 2)+
-    scale_color_viridis_d(label = c("Bird", "Frog", "Mammal", "Reptile"))+
+(fig2c <- results %>% ggplot(aes(log_presence, obsDen_HS_spearman))+
+    geom_point(size = 2, aes(shape = taxa))+
     labs(x = "log(occurrences)", y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
@@ -159,14 +156,13 @@ fig1
           legend.position = "none",
           strip.background = element_blank(),
           strip.text.x = element_blank())+
-    geom_smooth(method = "lm", linetype = "dashed", colour = "black")
+    geom_smooth(method = "lm", colour = "black")
   
 )
 
 
-(fig2d <- results %>% ggplot(aes(realized_dist, obsDen_HS_spearman, col = taxa))+
-    geom_point(size = 2)+
-    scale_color_viridis_d(label = c("Bird", "Frog", "Mammal", "Reptile"))+
+(fig2d <- results %>% ggplot(aes(realized_dist, obsDen_HS_spearman))+
+    geom_point(size = 2, aes(shape = taxa))+
     labs(x = expression(paste("log(realised distribution) (Km"^2,")")), y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
@@ -179,7 +175,7 @@ fig1
           legend.position = "none",
           strip.background = element_blank(),
           strip.text.x = element_blank())+
-    geom_smooth(method = "lm", linetype = "dashed", colour = "black")
+    geom_smooth(method = "lm", colour = "black")
   
 )
 
@@ -227,7 +223,7 @@ add_global_label <- function(pwobj, Xlab = NULL, Ylab = NULL, Xgap = 0.03, Ygap 
 }
 
 
-wrap_plots(fig2a,fig2b, fig2c, fig2d,ncol=2) %>% add_global_label(Ylab=expression(paste("Observed density ~ habitat suitability (   ",rho," )")), 
+wrap_plots(fig2a,fig2b, fig2c, fig2d,ncol=2) %>% add_global_label(Ylab=expression(paste("abundance-suitability relationship (   ",rho," )")), 
                                                                   Ygap=0.05,
                                                                   size = 5)
 
