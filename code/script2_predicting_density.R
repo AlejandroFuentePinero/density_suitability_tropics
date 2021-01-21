@@ -22,7 +22,6 @@ em <- raster("MTHORN_EMwmeanByTSS_mergedAlgo_mergedRun_mergedData.grd")
 # load population density
 
 abundance <- read.csv("MTHORN_density.csv")
-hl_abundance <- abundance %>% dplyr::select(site_name, latdecimal, longdecimal, MTHORN)
 hl_abundance <- hl_abundance %>% rename(density = MTHORN)
 
 #find relation between pop size and habitat suitability

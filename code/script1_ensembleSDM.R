@@ -109,12 +109,14 @@ myBiomodProj <- BIOMOD_Projection(
   new.env = myExpl,
   proj.name = 'projected_model',
   selected.models = 'all',
-  binary.meth = c('TSS'),
+  binary.meth = 'TSS',
   compress = 'xz',
   clamping.mask = F,
   output.format = '.grd')
 
 myCurrentProj <- get_predictions(myBiomodProj)
+
+plot(myCurrentProj)
 
 # Ensemble forcasting
 

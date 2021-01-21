@@ -20,7 +20,7 @@ setwd("/abundance_vs_suitability/data")
 results <- read.csv("results.csv")
 
 
-# figure 1 ----------------------------------------------------------------
+# figure 2 ----------------------------------------------------------------
 
 
 (fig1a <- results %>% ggplot()+
@@ -104,7 +104,7 @@ results <- read.csv("results.csv")
 fig1 <- (fig1a / fig1b / fig1c) |fig1d
 fig1
 
-# figure 2 ----------------------------------------------------------------
+# figure 3 ----------------------------------------------------------------
 
 (fig2a <- results %>% ggplot(aes(pot_dispersal2, obsDen_HS_spearman))+
     geom_point(size = 2, aes(shape = taxa))+
@@ -227,6 +227,25 @@ wrap_plots(fig2a,fig2b, fig2c, fig2d,ncol=2) %>% add_global_label(Ylab=expressio
                                                                   Ygap=0.05,
                                                                   size = 5)
 
+
+# figure 4 ----------------------------------------------------------------
+
+(figure4 <- results %>% 
+   ggplot(aes(tss, obsDen_HS_deviance_explained_gam))+
+   geom_point(size = 2)+
+   geom_smooth(method = "lm", col = "black")+
+   labs(x = "TSS", y = expression(paste("Deviance explained")))+
+   theme(panel.grid.major = element_blank(), 
+         panel.grid.minor = element_blank(),
+         panel.background = element_blank(), 
+         axis.line = element_line(colour = "black"),
+         axis.title = element_text(size = 10, family = "Arial"),
+         axis.text = element_text(size = 10, colour = "black", family = "Arial"),
+         legend.title = element_blank(),
+         legend.position = "none",
+         strip.background = element_blank(),
+         strip.text.x = element_blank())+
+   facet_wrap(~taxa, scales = "free"))
 #################
 ##End of script##
 #################
