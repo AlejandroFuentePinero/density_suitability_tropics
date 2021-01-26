@@ -18,16 +18,16 @@ setwd("/abundance_vs_suitability/data")
 # load ensemble model
 em <- raster("MTHORN_EMwmeanByTSS_mergedAlgo_mergedRun_mergedData.grd")
 
-
+plot(em)
 # load population density
 
 abundance <- read.csv("MTHORN_density.csv")
-hl_abundance <- hl_abundance %>% rename(density = MTHORN)
+hl_abundance <- abundance %>% rename(density = MTHORN)
 
 #find relation between pop size and habitat suitability
 
 coordinates(hl_abundance) <-  ~ longdecimal + latdecimal
-
+plot(hl_abundance, add = T)
 
 # for each pixel extract habitat suitability
 rasValue <- raster::extract(em, hl_abundance) 
@@ -120,6 +120,12 @@ density_cor <- density_cor[complete.cases(density_cor), ]
 
 cor.test(density_cor$density, density_cor$rasValue2, method = "spearman") # correlation
 
+# End of single species example. The link to the full data-set with all species abundance can be found 
+# at the end of the paper. Files are already formatted to be inputted to the script so the exploration of
+# other species predictions should be straightforward. If any error or problem should be found, please
+# contact Alejandro de la Fuente at alejandro.delafuentepinero1@my.jcu.edu.au
+
+
 
 # Influence of species traits on the relationship -------------------------
 
@@ -134,6 +140,12 @@ summary(lm(obsDen_HS_spearman ~ log_mass, data = results)) #mass
 
 summary(lm(obsDen_HS_spearman ~ pot_dispersal2, data = results)) #potential dispersal
 
+
+
+# Influence of SDM performance on prediction power ------------------------
+
+summary(lm(obsDen_HS_deviance_explained_gam ~ tss, data = results)) # to explore this by taxa (as per figure 4 in the
+# main text, a previous filter or subset of the results dataframe need to be applied)
 
 
 #################

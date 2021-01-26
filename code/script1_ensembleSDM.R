@@ -124,6 +124,12 @@ myBiomodEF <- BIOMOD_EnsembleForecasting(
   EM.output = myBiomodEM,
   projection.output = myBiomodProj)
 
+# End of single species example. The link to the full data-set with all species occurrences can be found 
+# at the end of the paper. Files are already formatted to be inputted to the script so the exploration of
+# other species predictions should be straightforward. If any error or problem should be found, please
+# contact Alejandro de la Fuente at alejandro.delafuentepinero1@my.jcu.edu.au
+
+
 #################
 ##End of script##
 #################
