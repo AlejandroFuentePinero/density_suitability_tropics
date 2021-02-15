@@ -31,6 +31,8 @@ spp_absences$MTHORN <- 0
 pa <- rbind(spp_absences, spp_presence)
 
 # Load predictors ---------------------------------------------------------
+#Here, we included the 14 predictions resulted from after removing variables with high VIF value.
+#Variables selection was implemented using usdm::vifstep function
 
 predictors_names <- list.files(path="/abundance_vs_suitability/data/predictors", 
                           pattern='tif$', 
