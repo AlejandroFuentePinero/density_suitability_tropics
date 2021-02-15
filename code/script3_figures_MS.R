@@ -45,7 +45,7 @@ results <- read.csv("results.csv")
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
     geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill = "orange3", col = "black", alpha = 0.6)+
-    labs(x = expression(paste("Prediction power")), y = "Density of values\n")+
+    labs(x = expression(paste("Predictive power")), y = "Density of values\n")+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
