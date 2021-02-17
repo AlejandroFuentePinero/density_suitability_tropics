@@ -1,4 +1,4 @@
-# Scrip 3: Final figures
+# Scrip 3: Manuscript figures
 # Alejandro de la Fuente Pinero
 # contact: alejandro.delafuentepinero1@my.jcu.edu.au
 

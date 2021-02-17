@@ -39,7 +39,8 @@ hl_predictors <- as.data.frame(hl_predictors)
 
 hl_predictors <- hl_predictors %>% dplyr::select(-c(latdecimal,longdecimal)) 
 
-hl_predictors <- hl_predictors %>% rename("hs" = "c.302..55..171..342..948..899..73..350..293..147..344..671..527..")
+hl_predictors <- hl_predictors %>% rename("hs" = 
+                                            "c.302..55..171..342..948..899..73..350..293..147..344..671..527..")
 
 
 #correlation hs~density(observed)
