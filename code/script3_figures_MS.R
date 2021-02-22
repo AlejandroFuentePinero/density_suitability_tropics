@@ -26,7 +26,7 @@ results <- read.csv("results.csv")
 (fig1a <- results %>% ggplot()+
    scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
    scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
-   geom_density(aes(x = obsDen_HS_spearman), fill = "royalblue3", col = "black", alpha = 0.6)+
+   geom_density(aes(x = obsDen_HS_spearman), fill = "dark grey", col = "black", alpha = 0.6)+
    labs(x = expression(paste("abundance-suitability correlation (",rho,")")), y = "")+
    theme(panel.grid.major = element_blank(), 
          panel.grid.minor = element_blank(),
@@ -44,8 +44,8 @@ results <- read.csv("results.csv")
 (fig1b <- results %>% ggplot()+
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
-    geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill = "orange3", col = "black", alpha = 0.6)+
-    labs(x = expression(paste("Predictive power")), y = "Density of values\n")+
+    geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill = "black", col = "black", alpha = 0.6)+
+    labs(x = expression(paste("Predictive power")), y = "")+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
@@ -59,31 +59,13 @@ results <- read.csv("results.csv")
   
 )
 
-(fig1c <- results %>% ggplot()+
-    scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
-    scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
-    geom_density(aes(x = predDen_obsDen_spearman), fill = "forestgreen", col = "black", alpha = 0.6)+
-    labs(x = expression(paste("Model accuracy (",rho,")")), y = "")+
-    theme(panel.grid.major = element_blank(), 
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour = "black"),
-          axis.title = element_text(size = 14),
-          axis.text = element_text(size = 12, colour = "black"),
-          legend.title = element_blank(),
-          legend.position = c(0.15,0.90),
-          strip.background = element_blank(),
-          strip.text.x = element_blank())
-  
-)
 
 
 (fig1d <- results %>% ggplot()+
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,1,2,3,4,5,6,7,8,9))+
-    geom_density(aes(x = obsDen_HS_spearman), fill = "royalblue3", col = "black", alpha = 0.6)+
-    geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill =  "orange3", col = "black", alpha = 0.6)+
-    geom_density(aes(x = predDen_obsDen_spearman), fill = "forestgreen", col = "black", alpha = 0.6)+
+    geom_density(aes(x = obsDen_HS_spearman), fill = "dark grey", col = "black", alpha = 0.6)+
+    geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill =  "black", col = "black", alpha = 0.6)+
     #labs(x = expression(paste("abundance-suitability relationship (",rho,")")), y = "")+
     theme(panel.grid.major = element_blank(), 
           panel.grid.minor = element_blank(),
@@ -101,7 +83,58 @@ results <- read.csv("results.csv")
   
 )
 
-fig1 <- (fig1a / fig1b / fig1c) |fig1d
+
+add_global_label <- function(pwobj, Xlab = NULL, Ylab = NULL, Xgap = 0.03, Ygap = 0.03, ...) {
+  ylabgrob <- patchwork::plot_spacer()
+  if (!is.null(Ylab)) {
+    ylabgrob <- ggplot() +
+      geom_text(aes(x = .5, y = .5), label = Ylab, angle = 90, ...) +
+      theme_void()
+  }
+  if (!is.null(Xlab)) {
+    xlabgrob <- ggplot() +
+      geom_text(aes(x = .5, y = .5), label = Xlab, ...) +
+      theme_void()
+  }
+  if (!is.null(Ylab) & is.null(Xlab)) {
+    return((ylabgrob + patchworkGrob(pwobj)) + 
+             patchwork::plot_layout(widths = 100 * c(Ygap, 1 - Ygap)))
+  }
+  if (is.null(Ylab) & !is.null(Xlab)) {
+    return((ylabgrob + pwobj) + 
+             (xlabgrob) +
+             patchwork::plot_layout(heights = 100 * c(1 - Xgap, Xgap),
+                                    widths = c(0, 100),
+                                    design = "
+                                   AB
+                                   CC
+                                   "
+             ))
+  }
+  if (!is.null(Ylab) & !is.null(Xlab)) {
+    return((ylabgrob + pwobj) + 
+             (xlabgrob) +
+             patchwork::plot_layout(heights = 100 * c(1 - Xgap, Xgap),
+                                    widths = 100 * c(Ygap, 1 - Ygap),
+                                    design = "
+                                   AB
+                                   CC
+                                   "
+             ))
+  }
+  return(pwobj)
+}
+
+
+
+
+fig1 <- (fig1a / fig1b) |fig1d
+
+fig1 <- fig1 %>% add_global_label(Ylab=expression(paste("Density of values")), 
+                          Ygap=0.05,
+                          size = 5,
+                          family = "Arial")
+
 fig1
 
 # figure 3 ----------------------------------------------------------------
@@ -181,71 +214,12 @@ fig1
 
 
 
-add_global_label <- function(pwobj, Xlab = NULL, Ylab = NULL, Xgap = 0.03, Ygap = 0.03, ...) {
-  ylabgrob <- patchwork::plot_spacer()
-  if (!is.null(Ylab)) {
-    ylabgrob <- ggplot() +
-      geom_text(aes(x = .5, y = .5), label = Ylab, angle = 90, ...) +
-      theme_void()
-  }
-  if (!is.null(Xlab)) {
-    xlabgrob <- ggplot() +
-      geom_text(aes(x = .5, y = .5), label = Xlab, ...) +
-      theme_void()
-  }
-  if (!is.null(Ylab) & is.null(Xlab)) {
-    return((ylabgrob + patchworkGrob(pwobj)) + 
-             patchwork::plot_layout(widths = 100 * c(Ygap, 1 - Ygap)))
-  }
-  if (is.null(Ylab) & !is.null(Xlab)) {
-    return((ylabgrob + pwobj) + 
-             (xlabgrob) +
-             patchwork::plot_layout(heights = 100 * c(1 - Xgap, Xgap),
-                                    widths = c(0, 100),
-                                    design = "
-                                   AB
-                                   CC
-                                   "
-             ))
-  }
-  if (!is.null(Ylab) & !is.null(Xlab)) {
-    return((ylabgrob + pwobj) + 
-             (xlabgrob) +
-             patchwork::plot_layout(heights = 100 * c(1 - Xgap, Xgap),
-                                    widths = 100 * c(Ygap, 1 - Ygap),
-                                    design = "
-                                   AB
-                                   CC
-                                   "
-             ))
-  }
-  return(pwobj)
-}
 
 
 wrap_plots(fig2a,fig2b, fig2c, fig2d,ncol=2) %>% add_global_label(Ylab=expression(paste("abundance-suitability relationship (   ",rho," )")), 
                                                                   Ygap=0.05,
                                                                   size = 5)
 
-
-# figure 4 ----------------------------------------------------------------
-
-(figure4 <- results %>% 
-   ggplot(aes(tss, obsDen_HS_deviance_explained_gam))+
-   geom_point(size = 2)+
-   geom_smooth(method = "lm", col = "black")+
-   labs(x = "TSS", y = expression(paste("Deviance explained")))+
-   theme(panel.grid.major = element_blank(), 
-         panel.grid.minor = element_blank(),
-         panel.background = element_blank(), 
-         axis.line = element_line(colour = "black"),
-         axis.title = element_text(size = 10, family = "Arial"),
-         axis.text = element_text(size = 10, colour = "black", family = "Arial"),
-         legend.title = element_blank(),
-         legend.position = "none",
-         strip.background = element_blank(),
-         strip.text.x = element_blank())+
-   facet_wrap(~taxa, scales = "free"))
 #################
 ##End of script##
 #################

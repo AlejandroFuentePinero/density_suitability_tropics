@@ -95,32 +95,8 @@ em_pred_raster <- rasterize(raster_input, em)
 em_pred_raster <- em_pred_raster$pred
 em_pred_raster[em_pred_raster<0] <- 0
 
+plot(em_pred_raster)
 
-
-# Model accuracy - relation between observed and predicted density --------
-
-# crop further unsuitable habitat (e.g., human settlements, body waters, farms, etc)
-
-rainforest <- rgdal::readOGR("rainforest_awt.shp")
-
-
-crs(rainforest) <- crs(em_pred_raster)
-
-predictors_masked <- mask(em_pred_raster, rainforest)
-
-plot(predictors_masked)
-
-#find relation between pop size and habitat suitability ///obsDEN ~ predDEN///
-rasValue2 <- raster::extract(predictors_masked, hl_abundance) 
-rasValue2 <- as.data.frame(rasValue2)
-
-MTHORN_abundance <- as.data.frame(hl_abundance)
-
-density_cor <- cbind(MTHORN_abundance, rasValue2)
-
-density_cor <- density_cor[complete.cases(density_cor), ]
-
-cor.test(density_cor$density, density_cor$rasValue2, method = "spearman") # correlation
 
 # End of single species example. The link to the full data-set with all species abundance can be found 
 # at the end of the paper. Files are already formatted to be inputted to the script so the exploration of
@@ -141,14 +117,6 @@ summary(lm(obsDen_HS_spearman ~ realized_dist, data = results))#range size
 summary(lm(obsDen_HS_spearman ~ log_mass, data = results)) #mass
 
 summary(lm(obsDen_HS_spearman ~ pot_dispersal2, data = results)) #potential dispersal
-
-
-
-# Influence of SDM performance on prediction power ------------------------
-
-summary(lm(obsDen_HS_deviance_explained_gam ~ tss, data = results)) # to explore this by taxa (as per figure 4 in the
-# main text, a previous filter or subset of the results dataframe need to be applied)
-
 
 #################
 ##End of script##
