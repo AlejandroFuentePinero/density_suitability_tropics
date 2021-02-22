@@ -65,7 +65,7 @@ myBiomodData <- BIOMOD_FormatingData(resp.var = myResp,
 myBiomodModelOut <- BIOMOD_Modeling(
   myBiomodData,
   models = c("GBM","MAXENT.Phillips","MARS", "GAM", "CTA", "ANN", "SRE", "FDA","RF"),# make sure you have maxent
-  # installed in your computer and R is linked to Jave to be able to run "MAXENT.Phillips" algorithm
+  # installed in your computer and R is linked to Java to be able to run "MAXENT.Phillips" algorithm
   NbRunEval=3,
   DataSplit=80,
   Prevalence=0.5,
