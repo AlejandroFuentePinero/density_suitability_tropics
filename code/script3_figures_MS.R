@@ -23,7 +23,7 @@ results <- read.csv("results.csv")
 # figure 2 ----------------------------------------------------------------
 
 
-(fig1a <- results %>% ggplot()+
+(fig2a <- results %>% ggplot()+
    scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
    scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
    geom_density(aes(x = obsDen_HS_spearman), fill = "dark grey", col = "black", alpha = 0.6)+
@@ -41,7 +41,7 @@ results <- read.csv("results.csv")
  
 )
 
-(fig1b <- results %>% ggplot()+
+(fig2b <- results %>% ggplot()+
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,0.5,1,1.5,2,2.5,3))+
     geom_density(aes(x = obsDen_HS_deviance_explained_gam), fill = "black", col = "black", alpha = 0.6)+
@@ -61,7 +61,7 @@ results <- read.csv("results.csv")
 
 
 
-(fig1d <- results %>% ggplot()+
+(fig2c <- results %>% ggplot()+
     scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1), limits = c(0,1), labels = c(0,0.25,0.5,0.75,1))+
     scale_y_continuous(breaks = c(0,1,2,3,4,5,6,7,8,9))+
     geom_density(aes(x = obsDen_HS_spearman), fill = "dark grey", col = "black", alpha = 0.6)+
@@ -128,9 +128,9 @@ add_global_label <- function(pwobj, Xlab = NULL, Ylab = NULL, Xgap = 0.03, Ygap 
 
 
 
-fig1 <- (fig1a / fig1b) |fig1d
+fig2 <- (fig2a / fig2b) |fig1c
 
-fig1 <- fig1 %>% add_global_label(Ylab=expression(paste("Density of values")), 
+fig2<- fig2 %>% add_global_label(Ylab=expression(paste("Density of values")), 
                           Ygap=0.05,
                           size = 5,
                           family = "Arial")
@@ -139,7 +139,7 @@ fig1
 
 # figure 3 ----------------------------------------------------------------
 
-(fig2a <- results %>% ggplot(aes(pot_dispersal2, obsDen_HS_spearman))+
+(fig3a <- results %>% ggplot(aes(pot_dispersal2, obsDen_HS_spearman))+
     geom_point(size = 2, aes(shape = taxa))+
     labs(x = "Potential dispersal index", y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
@@ -157,7 +157,7 @@ fig1
   
 ) 
 
-(fig2b <- results %>% ggplot(aes(log_mass, obsDen_HS_spearman))+
+(fig3b <- results %>% ggplot(aes(log_mass, obsDen_HS_spearman))+
     geom_point(size = 2, aes(shape = taxa))+
     labs(x = "log(mass) (g)", y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
@@ -175,7 +175,7 @@ fig1
   
 )
 
-(fig2c <- results %>% ggplot(aes(log_presence, obsDen_HS_spearman))+
+(fig3c <- results %>% ggplot(aes(log_presence, obsDen_HS_spearman))+
     geom_point(size = 2, aes(shape = taxa))+
     labs(x = "log(occurrences)", y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
@@ -194,7 +194,7 @@ fig1
 )
 
 
-(fig2d <- results %>% ggplot(aes(realized_dist, obsDen_HS_spearman))+
+(fig3d <- results %>% ggplot(aes(realized_dist, obsDen_HS_spearman))+
     geom_point(size = 2, aes(shape = taxa))+
     labs(x = expression(paste("log(realised distribution) (Km"^2,")")), y = expression(paste("Observed density ~ habitat suitability (",rho,")")))+
     theme(panel.grid.major = element_blank(), 
@@ -216,7 +216,7 @@ fig1
 
 
 
-wrap_plots(fig2a,fig2b, fig2c, fig2d,ncol=2) %>% add_global_label(Ylab=expression(paste("abundance-suitability relationship (   ",rho," )")), 
+wrap_plots(fig3a,fig3b, fig3c, fig3d,ncol=2) %>% add_global_label(Ylab=expression(paste("abundance-suitability relationship (   ",rho," )")), 
                                                                   Ygap=0.05,
                                                                   size = 5)
 
