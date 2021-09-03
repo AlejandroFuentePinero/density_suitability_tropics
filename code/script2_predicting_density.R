@@ -109,14 +109,32 @@ plot(em_pred_raster)
 
 results <- read.csv("results.csv")
 
+results$taxa <- factor(results$taxa, levels = c("mammal", "bird", "reptile", "frog"))
 
-summary(lm(obsDen_HS_spearman ~ log_presence, data = results)) #occurrences
+# check correlation among predictors
+corr <- results %>% select(log_presence, log_mass, pot_dispersal2, realized_dist)
 
-summary(lm(obsDen_HS_spearman ~ realized_dist, data = results))#range size
+cor(corr, method = "spearman")
 
-summary(lm(obsDen_HS_spearman ~ log_mass, data = results)) #mass
+summary(model <- lm(obsDen_HS_spearman ~ log_presence + log_mass + pot_dispersal2 + realized_dist + taxa, data = results))
 
-summary(lm(obsDen_HS_spearman ~ pot_dispersal2, data = results)) #potential dispersal
+
+check_model(model)
+car::vif(model)
+
+
+summary(model_2 <- lm(obsDen_HS_spearman ~ log_presence + log_mass + pot_dispersal2 + realized_dist, data = results))
+
+check_model(model_2)
+car::vif(model_2)
+
+
+step <- stepAIC(model_2, direction = "backward")
+
+step$anova
+
+summary(model_3 <- lm(obsDen_HS_spearman ~ log_presence + pot_dispersal2, data = results))
+
 
 #################
 ##End of script##
