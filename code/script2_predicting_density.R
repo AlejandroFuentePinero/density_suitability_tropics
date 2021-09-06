@@ -7,7 +7,6 @@ library(raster)
 library(tidyverse)
 library(sf)
 -----------------------
-  
 
 setwd("/abundance_vs_suitability/data")
 # Step 1 ------------------------------------------------------------------
@@ -39,16 +38,15 @@ hl_predictors <- as.data.frame(hl_predictors)
 
 hl_predictors <- hl_predictors %>% dplyr::select(-c(latdecimal,longdecimal)) 
 
-hl_predictors <- hl_predictors %>% rename("hs" = 
-                                            "c.302..55..171..342..948..899..73..350..293..147..344..671..527..")
+names(hl_predictors)[3] <- "hs"
 
 
 #correlation hs~density(observed)
-df_cor <- tibble(x = hl_predictors$hs,
-                 y = hl_predictors$density) 
 
-cor.test(df_cor$x, df_cor$y, method = "spearman")
 
+cor.test(x = hl_predictors$hs, y=hl_predictors$density, method = "spearman")
+
+plot(hl_predictors$density ~ hl_predictors$hs)
 
 library(mgcv)
 library(gratia)
