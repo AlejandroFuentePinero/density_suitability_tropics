@@ -46,8 +46,6 @@ names(hl_predictors)[3] <- "hs"
 
 cor.test(x = hl_predictors$hs, y=hl_predictors$density, method = "spearman")
 
-plot(hl_predictors$density ~ hl_predictors$hs)
-
 library(mgcv)
 library(gratia)
 library(performance)
