@@ -1,0 +1,14 @@
+fc - foliage projective cover
+fs - forest structure
+annp - mean annual precipitation
+NPP - net primary production
+ps - precipitation seasonality
+nts - night temperature seasonality
+tri - terrain ruggesness index
+fra - fragmentation index (fragscape)
+slo - slope
+asc - australian soil classification
+nto - total nitrogen (%); 95% confident; 15-30 cm
+pto - total phosporus (%); 95% confident; 15-30 cm
+phc - pH of 1:5 soil/0.01M calcium chloride extract; 15-30 cm
+awc - Available water capacity computed for each of the specified depth increments (%); 15-30 cm
